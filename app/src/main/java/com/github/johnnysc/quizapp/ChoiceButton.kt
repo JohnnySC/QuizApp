@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Parcelable
 import android.util.AttributeSet
 import androidx.annotation.ColorRes
+import kotlinx.parcelize.Parcelize
 
 /**
  * @author Asatryan on 31.07.2022
@@ -44,7 +45,7 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton {
     override fun onSaveInstanceState(): Parcelable {
         val superState = super.onSaveInstanceState()
         val myState = ChoiceButtonState(superState)
-        myState.state = currentState.javaClass.simpleName
+        myState.state = currentState
         myState.name = text.toString()
         return myState
     }
@@ -52,15 +53,13 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton {
     override fun onRestoreInstanceState(state: Parcelable) {
         val savedState = state as ChoiceButtonState
         super.onRestoreInstanceState(savedState.superState)
-        val className = savedState.state
         text = savedState.name
-        currentState = Class
-            .forName("com.github.johnnysc.quizapp.ChoiceButton\$State$$className")
-            .newInstance() as State
+        currentState = savedState.state
         currentState.show(this)
     }
 
-    sealed class State(@ColorRes private val colorId: Int) {
+    @Parcelize
+    sealed class State(@ColorRes private val colorId: Int) : Parcelable {
 
         open fun show(choiceButton: ChoiceButton) =
             choiceButton.setBackgroundColor(choiceButton.resources.getColor(colorId, null))
