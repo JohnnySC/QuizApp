@@ -1,0 +1,31 @@
+{
+  "questions": [
+    {
+      "question": "What is a dog",
+      "correct": "собака",
+      "incorrects": [
+        "кошка",
+        "страус",
+        "енот"
+      ]
+    },
+    {
+      "question": "What is a cat",
+      "correct": "кошка",
+      "incorrects": [
+        "собака",
+        "страус",
+        "енот"
+      ]
+    },
+    {
+      "question": "What is a racoon",
+      "correct": "енот",
+      "incorrects": [
+        "собака",
+        "страус",
+        "кошка"
+      ]
+    }
+  ]
+}
