@@ -1,6 +1,7 @@
 package com.github.johnnysc.quizapp
 
 import android.content.Context
+import android.os.Parcelable
 import android.util.AttributeSet
 import androidx.annotation.ColorRes
 
@@ -9,7 +10,7 @@ import androidx.annotation.ColorRes
  */
 class ChoiceButton : androidx.appcompat.widget.AppCompatButton {
 
-    private var state: State = State.Initial
+    private var state: State = State.Initial()
 
     //region constructors
     constructor(context: Context) : super(context)
@@ -21,8 +22,11 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton {
     )
     //endregion
 
+    private var currentState: State = state
+
     fun init(newState: State, data: String) {
-        State.Initial.show(this)
+        currentState = State.Initial()
+        currentState.show(this)
         state = newState
         text = data
     }
@@ -32,8 +36,28 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton {
     }
 
     fun init(callback: ChoiceButtonClickCallback) = setOnClickListener {
+        currentState = state
         state.show(this)
         state.handle(callback)
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        val superState = super.onSaveInstanceState()
+        val myState = ChoiceButtonState(superState)
+        myState.state = currentState.javaClass.simpleName
+        myState.name = text.toString()
+        return myState
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable) {
+        val savedState = state as ChoiceButtonState
+        super.onRestoreInstanceState(savedState.superState)
+        val className = savedState.state
+        text = savedState.name
+        currentState = Class
+            .forName("com.github.johnnysc.quizapp.ChoiceButton\$State$$className")
+            .newInstance() as State
+        currentState.show(this)
     }
 
     sealed class State(@ColorRes private val colorId: Int) {
@@ -47,7 +71,7 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton {
             override fun show(choiceButton: ChoiceButton) = Unit
         }
 
-        object Initial : State(R.color.teal_200)
+        class Initial : State(R.color.teal_200)
 
         class Correct : State(R.color.teal_700) {
             override fun handle(callback: ChoiceButtonClickCallback) = callback.correctClicked()
