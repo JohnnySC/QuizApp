@@ -12,8 +12,6 @@ import kotlinx.parcelize.Parcelize
  */
 class ChoiceButton : androidx.appcompat.widget.AppCompatButton, ChoiceButtonActions {
 
-    private var state: State = State.Initial()
-
     //region constructors
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -24,45 +22,47 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton, ChoiceButtonActi
     )
     //endregion
 
-    private var currentState: State = state
+    override fun getFreezesText() = true
+
+    private var nextState: State = State.Initial()
+    private var currentState: State = State.Initial()
 
     override fun init(newState: State, data: String) {
         currentState = State.Initial()
         currentState.show(this)
-        state = newState
+        nextState = newState
         text = data
     }
 
     override fun clear() {
-        state = State.Empty()
+        nextState = currentState.empty()
     }
 
     override fun init(callback: ChoiceButtonClickCallback) = setOnClickListener {
-        currentState = state
-        state.show(this)
-        state.handle(callback)
+        currentState = nextState
+        currentState.show(this)
+        currentState.handle(callback)
     }
 
     override fun onSaveInstanceState(): Parcelable {
         val superState = super.onSaveInstanceState()
-        val myState =
-            ChoiceButtonState(superState)
-        myState.state = state
+        val myState = ChoiceButtonState(superState)
+        myState.nextState = nextState
         myState.currentState = currentState
-        myState.name = text.toString()
         return myState
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {
         val savedState = state as ChoiceButtonState
         super.onRestoreInstanceState(savedState.superState)
-        text = savedState.name
-        this.state = savedState.state
+        nextState = savedState.nextState
         currentState = savedState.currentState
         currentState.show(this)
     }
 
     interface State : Parcelable {
+
+        fun empty(): State
 
         fun show(choiceButton: ChoiceButton)
 
@@ -73,12 +73,12 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton, ChoiceButtonActi
             override fun show(choiceButton: ChoiceButton) = with(choiceButton) {
                 setBackgroundColor(resources.getColor(colorId, null))
             }
+
+            override fun empty() = Empty(colorId)
         }
 
         @Parcelize
-        class Empty : Abstract(R.color.teal_200) {
-            override fun show(choiceButton: ChoiceButton) = Unit
-        }
+        class Empty(private val colorId: Int) : Abstract(colorId)
 
         @Parcelize
         class Initial : Abstract(R.color.teal_200)

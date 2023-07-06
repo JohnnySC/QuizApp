@@ -8,8 +8,7 @@ import android.view.View;
  * @author Asatryan on 31.07.2022
  */
 public class ChoiceButtonState extends View.BaseSavedState {
-    String name;
-    ChoiceButton.State state;
+    ChoiceButton.State nextState;
     ChoiceButton.State currentState;
 
     ChoiceButtonState(Parcelable superState) {
@@ -18,16 +17,14 @@ public class ChoiceButtonState extends View.BaseSavedState {
 
     private ChoiceButtonState(Parcel in) {
         super(in);
-        name = in.readString();
-        state = in.readParcelable(ChoiceButton.State.class.getClassLoader());
+        nextState = in.readParcelable(ChoiceButton.State.class.getClassLoader());
         currentState = in.readParcelable(ChoiceButton.State.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
         super.writeToParcel(out, flags);
-        out.writeString(name);
-        out.writeParcelable(state, flags);
+        out.writeParcelable(nextState, flags);
         out.writeParcelable(currentState, flags);
     }
 
