@@ -11,7 +11,7 @@ class ScreenUiMapperTest {
 
     @Test
     fun test() {
-        val mapper = ScreenUiMapper.Base()
+        val mapper = ScreenUiMapper.Base(ChoicesMapper.Mock())
 
         val actual = mapper.map(
             Questions(
