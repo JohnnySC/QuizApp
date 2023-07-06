@@ -1,12 +1,12 @@
 package com.github.johnnysc.quizapp.presentation
 
-import android.widget.TextView
 import com.github.johnnysc.quizapp.data.ChoicesMapper
 import com.github.johnnysc.quizapp.data.Question
 import com.github.johnnysc.quizapp.views.ChoiceButton
 import com.github.johnnysc.quizapp.views.ChoiceButtonActions
 import com.github.johnnysc.quizapp.views.NextButton
 import com.github.johnnysc.quizapp.views.NextButtonActions
+import com.github.johnnysc.quizapp.views.QuestionTextViewAction
 
 /**
  * @author Asatryan on 31.07.2022
@@ -19,8 +19,8 @@ interface ScreenUi {
 
     fun apply(
         buttons: List<ChoiceButtonActions>,
-        textView: TextView,
-        nextButton: NextButton
+        textView: QuestionTextViewAction,
+        nextButton: NextButtonActions
     )
 
     abstract class Abstract(private val question: Question, mapper: ChoicesMapper) : ScreenUi {
@@ -35,11 +35,11 @@ interface ScreenUi {
 
         override fun apply(
             buttons: List<ChoiceButtonActions>,
-            textView: TextView,
-            nextButton: NextButton
+            textView: QuestionTextViewAction,
+            nextButton: NextButtonActions
         ) {
             state.apply(buttons, nextButton, nextButtonState)
-            textView.text = question.question
+            textView.show(question.question)
         }
     }
 
@@ -63,7 +63,8 @@ interface ScreenUi {
 
         fun apply(
             buttons: List<ChoiceButtonActions>,
-            nextButton: NextButtonActions, nextButtonState: NextButton.State
+            nextButton: NextButtonActions,
+            nextButtonState: NextButton.State
         )
 
         class Initial(
