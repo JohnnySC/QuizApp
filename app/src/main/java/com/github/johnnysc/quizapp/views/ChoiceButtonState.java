@@ -1,4 +1,4 @@
-package com.github.johnnysc.quizapp;
+package com.github.johnnysc.quizapp.views;
 
 import android.os.Parcel;
 import android.os.Parcelable;

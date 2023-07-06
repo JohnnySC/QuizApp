@@ -1,9 +1,12 @@
-package com.github.johnnysc.quizapp
+package com.github.johnnysc.quizapp.presentation
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import com.github.johnnysc.quizapp.data.Repository
+import com.github.johnnysc.quizapp.views.ChoiceButtonClickCallback
+import com.github.johnnysc.quizapp.views.NextAction
 
 /**
  * @author Asatryan on 31.07.2022

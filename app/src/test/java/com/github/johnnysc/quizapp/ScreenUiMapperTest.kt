@@ -1,5 +1,10 @@
 package com.github.johnnysc.quizapp
 
+import com.github.johnnysc.quizapp.data.ChoicesMapper
+import com.github.johnnysc.quizapp.data.Question
+import com.github.johnnysc.quizapp.data.Questions
+import com.github.johnnysc.quizapp.presentation.ScreenUi
+import com.github.johnnysc.quizapp.presentation.ScreenUiMapper
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test

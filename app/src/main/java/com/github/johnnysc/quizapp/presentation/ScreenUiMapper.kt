@@ -1,4 +1,8 @@
-package com.github.johnnysc.quizapp
+package com.github.johnnysc.quizapp.presentation
+
+import com.github.johnnysc.quizapp.data.ChoicesMapper
+import com.github.johnnysc.quizapp.data.Questions
+import com.github.johnnysc.quizapp.data.Repository
 
 interface ScreenUiMapper : Repository.Mapper<ScreenUi> {
 

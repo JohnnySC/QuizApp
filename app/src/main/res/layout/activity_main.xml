@@ -26,25 +26,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/questionTextView">
 
-        <com.github.johnnysc.quizapp.ChoiceButton
+        <com.github.johnnysc.quizapp.views.ChoiceButton
             android:id="@+id/buttonOne"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small" />
 
-        <com.github.johnnysc.quizapp.ChoiceButton
+        <com.github.johnnysc.quizapp.views.ChoiceButton
             android:id="@+id/buttonTwo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small" />
 
-        <com.github.johnnysc.quizapp.ChoiceButton
+        <com.github.johnnysc.quizapp.views.ChoiceButton
             android:id="@+id/buttonThree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small" />
 
-        <com.github.johnnysc.quizapp.ChoiceButton
+        <com.github.johnnysc.quizapp.views.ChoiceButton
             android:id="@+id/buttonFour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
 
     </GridLayout>
 
-    <com.github.johnnysc.quizapp.NextButton
+    <com.github.johnnysc.quizapp.views.NextButton
         android:id="@+id/nextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,9 +1,13 @@
-package com.github.johnnysc.quizapp
+package com.github.johnnysc.quizapp.presentation
 
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.github.johnnysc.quizapp.ProvideViewModel
+import com.github.johnnysc.quizapp.R
+import com.github.johnnysc.quizapp.views.ChoiceButton
+import com.github.johnnysc.quizapp.views.NextButton
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,7 +1,8 @@
-package com.github.johnnysc.quizapp
+package com.github.johnnysc.quizapp.data
 
 import android.content.Context
 import androidx.annotation.RawRes
+import com.github.johnnysc.quizapp.R
 import com.google.gson.Gson
 
 /**

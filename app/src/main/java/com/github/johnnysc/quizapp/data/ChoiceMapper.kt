@@ -1,4 +1,7 @@
-package com.github.johnnysc.quizapp
+package com.github.johnnysc.quizapp.data
+
+import com.github.johnnysc.quizapp.presentation.Mapper
+import com.github.johnnysc.quizapp.views.ChoiceButton
 
 /**
  * @author Asatryan on 31.07.2022

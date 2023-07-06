@@ -1,15 +1,16 @@
-package com.github.johnnysc.quizapp
+package com.github.johnnysc.quizapp.views
 
 import android.content.Context
 import android.os.Parcelable
 import android.util.AttributeSet
 import androidx.annotation.ColorRes
+import com.github.johnnysc.quizapp.R
 import kotlinx.parcelize.Parcelize
 
 /**
  * @author Asatryan on 31.07.2022
  */
-class ChoiceButton : androidx.appcompat.widget.AppCompatButton {
+class ChoiceButton : androidx.appcompat.widget.AppCompatButton, ChoiceButtonActions {
 
     private var state: State = State.Initial()
 
@@ -25,18 +26,18 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton {
 
     private var currentState: State = state
 
-    fun init(newState: State, data: String) {
+    override fun init(newState: State, data: String) {
         currentState = State.Initial()
         currentState.show(this)
         state = newState
         text = data
     }
 
-    fun clear() {
+    override fun clear() {
         state = State.Empty()
     }
 
-    fun init(callback: ChoiceButtonClickCallback) = setOnClickListener {
+    override fun init(callback: ChoiceButtonClickCallback) = setOnClickListener {
         currentState = state
         state.show(this)
         state.handle(callback)
@@ -44,7 +45,8 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton {
 
     override fun onSaveInstanceState(): Parcelable {
         val superState = super.onSaveInstanceState()
-        val myState = ChoiceButtonState(superState)
+        val myState =
+            ChoiceButtonState(superState)
         myState.state = currentState
         myState.name = text.toString()
         return myState
@@ -58,25 +60,34 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton {
         currentState.show(this)
     }
 
-    @Parcelize
-    sealed class State(@ColorRes private val colorId: Int) : Parcelable {
+    interface State : Parcelable {
 
-        open fun show(choiceButton: ChoiceButton) =
-            choiceButton.setBackgroundColor(choiceButton.resources.getColor(colorId, null))
+        fun show(choiceButton: ChoiceButton)
 
-        open fun handle(callback: ChoiceButtonClickCallback) = Unit
+        fun handle(callback: ChoiceButtonClickCallback) = Unit
 
-        class Empty : State(0) {
+        abstract class Abstract(@ColorRes private val colorId: Int) : State {
+
+            override fun show(choiceButton: ChoiceButton) = with(choiceButton) {
+                setBackgroundColor(resources.getColor(colorId, null))
+            }
+        }
+
+        @Parcelize
+        class Empty : Abstract(0) {
             override fun show(choiceButton: ChoiceButton) = Unit
         }
 
-        class Initial : State(R.color.teal_200)
+        @Parcelize
+        class Initial : Abstract(R.color.teal_200)
 
-        class Correct : State(R.color.teal_700) {
+        @Parcelize
+        class Correct : Abstract(R.color.teal_700) {
             override fun handle(callback: ChoiceButtonClickCallback) = callback.correctClicked()
         }
 
-        class Incorrect : State(R.color.purple_200) {
+        @Parcelize
+        class Incorrect : Abstract(R.color.purple_200) {
             override fun handle(callback: ChoiceButtonClickCallback) = callback.incorrectClicked()
         }
     }
@@ -87,4 +98,13 @@ interface ChoiceButtonClickCallback {
     fun correctClicked()
 
     fun incorrectClicked()
+}
+
+interface ChoiceButtonActions {
+
+    fun init(newState: ChoiceButton.State, data: String)
+
+    fun clear()
+
+    fun init(callback: ChoiceButtonClickCallback)
 }

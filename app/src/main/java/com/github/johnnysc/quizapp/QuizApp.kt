@@ -1,6 +1,12 @@
 package com.github.johnnysc.quizapp
 
 import android.app.Application
+import com.github.johnnysc.quizapp.data.ChoicesMapper
+import com.github.johnnysc.quizapp.data.ReadRawResource
+import com.github.johnnysc.quizapp.data.Repository
+import com.github.johnnysc.quizapp.presentation.MainViewModel
+import com.github.johnnysc.quizapp.presentation.ScreenCommunication
+import com.github.johnnysc.quizapp.presentation.ScreenUiMapper
 import com.google.gson.Gson
 
 /**

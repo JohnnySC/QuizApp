@@ -1,4 +1,4 @@
-package com.github.johnnysc.quizapp
+package com.github.johnnysc.quizapp.data
 
 import com.google.gson.annotations.SerializedName
 
