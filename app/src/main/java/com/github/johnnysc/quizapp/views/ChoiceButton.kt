@@ -29,18 +29,18 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton, ChoiceButtonActi
 
     override fun init(newState: State, data: String) {
         currentState = State.Initial()
-        currentState.show(this)
+        currentState.map(Show(this))
         nextState = newState
         text = data
     }
 
     override fun clear() {
-        nextState = currentState.empty()
+        nextState = currentState.map(MakeEmptyState)
     }
 
     override fun init(callback: ChoiceButtonClickCallback) = setOnClickListener {
         currentState = nextState
-        currentState.show(this)
+        currentState.map(Show(this))
         currentState.handle(callback)
     }
 
@@ -57,24 +57,22 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton, ChoiceButtonActi
         super.onRestoreInstanceState(savedState.superState)
         nextState = savedState.nextState
         currentState = savedState.currentState
-        currentState.show(this)
+        currentState.map(Show(this))
     }
 
     interface State : Parcelable {
 
-        fun empty(): State
+        interface Mapper<T : Any> {
+            fun map(colorId: Int): T
+        }
 
-        fun show(choiceButton: ChoiceButton)
+        fun <T : Any> map(mapper: Mapper<T>): T
 
         fun handle(callback: ChoiceButtonClickCallback) = Unit
 
         abstract class Abstract(@ColorRes private val colorId: Int) : State {
 
-            override fun show(choiceButton: ChoiceButton) = with(choiceButton) {
-                setBackgroundColor(resources.getColor(colorId, null))
-            }
-
-            override fun empty() = Empty(colorId)
+            override fun <T : Any> map(mapper: Mapper<T>): T = mapper.map(colorId)
         }
 
         @Parcelize
@@ -92,6 +90,16 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton, ChoiceButtonActi
         class Incorrect : Abstract(R.color.purple_200) {
             override fun handle(callback: ChoiceButtonClickCallback) = callback.incorrectClicked()
         }
+    }
+}
+
+object MakeEmptyState : ChoiceButton.State.Mapper<ChoiceButton.State> {
+    override fun map(colorId: Int) = ChoiceButton.State.Empty(colorId)
+}
+
+class Show(private val choiceButton: ChoiceButton) : ChoiceButton.State.Mapper<Unit> {
+    override fun map(colorId: Int) = with(choiceButton) {
+        setBackgroundColor(resources.getColor(colorId, null))
     }
 }
 
