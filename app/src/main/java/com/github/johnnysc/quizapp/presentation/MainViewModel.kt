@@ -31,7 +31,7 @@ class MainViewModel(
         communication.map(screenUi)
     }
 
-    val liveData = MutableLiveData<String>()
+    val liveData = SingleLiveEvent<String>()
 
     override fun finish() {//todo replace with navigation to other screen
         liveData.value = "finished"

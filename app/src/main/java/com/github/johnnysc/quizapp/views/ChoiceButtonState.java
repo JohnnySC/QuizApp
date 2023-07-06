@@ -10,6 +10,7 @@ import android.view.View;
 public class ChoiceButtonState extends View.BaseSavedState {
     String name;
     ChoiceButton.State state;
+    ChoiceButton.State currentState;
 
     ChoiceButtonState(Parcelable superState) {
         super(superState);
@@ -19,6 +20,7 @@ public class ChoiceButtonState extends View.BaseSavedState {
         super(in);
         name = in.readString();
         state = in.readParcelable(ChoiceButton.State.class.getClassLoader());
+        currentState = in.readParcelable(ChoiceButton.State.class.getClassLoader());
     }
 
     @Override
@@ -26,6 +28,7 @@ public class ChoiceButtonState extends View.BaseSavedState {
         super.writeToParcel(out, flags);
         out.writeString(name);
         out.writeParcelable(state, flags);
+        out.writeParcelable(currentState, flags);
     }
 
     public static final Parcelable.Creator<ChoiceButtonState> CREATOR

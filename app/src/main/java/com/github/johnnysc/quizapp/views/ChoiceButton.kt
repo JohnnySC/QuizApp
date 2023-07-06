@@ -47,7 +47,8 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton, ChoiceButtonActi
         val superState = super.onSaveInstanceState()
         val myState =
             ChoiceButtonState(superState)
-        myState.state = currentState
+        myState.state = state
+        myState.currentState = currentState
         myState.name = text.toString()
         return myState
     }
@@ -56,7 +57,8 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton, ChoiceButtonActi
         val savedState = state as ChoiceButtonState
         super.onRestoreInstanceState(savedState.superState)
         text = savedState.name
-        currentState = savedState.state
+        this.state = savedState.state
+        currentState = savedState.currentState
         currentState.show(this)
     }
 
@@ -74,7 +76,7 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton, ChoiceButtonActi
         }
 
         @Parcelize
-        class Empty : Abstract(0) {
+        class Empty : Abstract(R.color.teal_200) {
             override fun show(choiceButton: ChoiceButton) = Unit
         }
 
