@@ -24,12 +24,13 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton, ChoiceButtonActi
 
     override fun getFreezesText() = true
 
+    private val show = Show(this)
     private var nextState: State = State.Initial()
     private var currentState: State = State.Initial()
 
     override fun init(newState: State, data: String) {
         currentState = State.Initial()
-        currentState.map(Show(this))
+        currentState.map(show)
         nextState = newState
         text = data
     }
@@ -40,7 +41,7 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton, ChoiceButtonActi
 
     override fun init(callback: ChoiceButtonClickCallback) = setOnClickListener {
         currentState = nextState
-        currentState.map(Show(this))
+        currentState.map(show)
         currentState.handle(callback)
     }
 
@@ -57,7 +58,7 @@ class ChoiceButton : androidx.appcompat.widget.AppCompatButton, ChoiceButtonActi
         super.onRestoreInstanceState(savedState.superState)
         nextState = savedState.nextState
         currentState = savedState.currentState
-        currentState.map(Show(this))
+        currentState.map(show)
     }
 
     interface State : Parcelable {
